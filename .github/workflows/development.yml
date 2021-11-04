@@ -1,0 +1,46 @@
+name: deploy to dev.builddrive.com
+on:
+  push:
+    branches: [ develop ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout latest
+        uses: actions/checkout@v2
+
+      - name: setup nodejs
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: 14.15.x
+          # cache supported values: npm, yarn, pnpm
+          cache: npm
+
+      - name: install dependencies
+        run: npm install
+
+      - name: compile client
+        run: npm run client:build
+
+      - name: save client
+        run: cp -rf client/build/* server/public/ && cp -rf client/build/index.html server/views/
+
+      - name: copy start file
+        run: cp -f docker-start.sh server/start.sh
+
+      - name: deploy to server
+        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+        with:
+          server: ftp.builddrive.com
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          # Folder to upload from, must end with trailing slash /
+          local-dir: ./server/
+          # Path to upload to on the server. Must end with trailing slash /
+          server-dir: /dev.buildcloud.se/
+          # How verbose should the information be - minimal, standard, or verbose
+          log-level: standard
