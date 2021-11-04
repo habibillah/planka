@@ -30,7 +30,7 @@ jobs:
         run: cp -rf client/build/* server/public/ && cp -rf client/build/index.html server/views/
 
       - name: copy start file
-        run: ls -l server && cp -f docker-start.sh server/start.sh
+        run: cp -f docker-start.sh server/start.sh
 
       - name: deploy to server
         uses: SamKirkland/FTP-Deploy-Action@4.1.0
@@ -38,6 +38,9 @@ jobs:
           server: ftp.builddrive.com
           username: ${{ secrets.ftp_username }}
           password: ${{ secrets.ftp_password }}
+          exclude:
+            - "**/.git*"
+            - "**/.git*/**"
           # Folder to upload from, must end with trailing slash /
           local-dir: ./server/
           # Path to upload to on the server. Must end with trailing slash /
