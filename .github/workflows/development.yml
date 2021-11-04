@@ -39,8 +39,8 @@ jobs:
           username: ${{ secrets.ftp_username }}
           password: ${{ secrets.ftp_password }}
           exclude:
-            - "**/.git*"
-            - "**/.git*/**"
+            - **/.git*
+            - **/.git*/**
           # Folder to upload from, must end with trailing slash /
           local-dir: ./server/
           # Path to upload to on the server. Must end with trailing slash /
