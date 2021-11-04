@@ -30,7 +30,7 @@ jobs:
         run: cp -rf client/build/* server/public/ && cp -rf client/build/index.html server/views/
 
       - name: copy start file
-        run: cp -f docker-start.sh server/start.sh
+        run: ls -l server && cp -f docker-start.sh server/start.sh
 
       - name: deploy to server
         uses: SamKirkland/FTP-Deploy-Action@4.1.0
