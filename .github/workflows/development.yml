@@ -44,3 +44,4 @@ jobs:
           server-dir: /dev.buildcloud.se/
           # How verbose should the information be - minimal, standard, or verbose
           log-level: standard
+          exclude: "[**/.git*, **/.git*/**]"
