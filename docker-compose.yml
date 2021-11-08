@@ -2,7 +2,7 @@ version: '3'
 
 services:
   planka:
-    build: .
+    image: ghcr.io/habibillah/planka:latest
     command: >
       bash -c
         "for i in `seq 1 30`; do
@@ -34,6 +34,11 @@ services:
     environment:
       - POSTGRES_DB=planka
       - POSTGRES_HOST_AUTH_METHOD=trust
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   user-avatars:
